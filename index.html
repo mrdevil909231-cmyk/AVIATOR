@@ -5,124 +5,228 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AVIATOR</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101010;color:white;font-family:Arial,sans-serif}
-header{height:65px;background:#1b1b1b;border-bottom:1px solid #383838;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
-.logo{font-size:27px;font-weight:900;letter-spacing:2px;color:#f23}
+body{
+ margin:0;background:#101116;color:white;
+ font-family:Arial,sans-serif
+}
+header{
+ height:65px;background:#191a20;
+ border-bottom:1px solid #343640;
+ display:flex;align-items:center;
+ justify-content:space-between;padding:0 22px
+}
+.logo{font-size:27px;font-weight:900;letter-spacing:2px;color:#ef343c}
 .logo span{color:white}
-.balance{background:#292929;border-radius:8px;padding:12px 17px;font-size:14px}
-main{max-width:1250px;margin:18px auto;padding:0 12px}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;color:#aaa;font-size:13px}
-.live{color:#ef4949}
+.balance{background:#292a32;border-radius:8px;padding:12px 17px;font-size:13px}
+
+main{max-width:1300px;margin:18px auto;padding:0 12px}
+.topbar{display:flex;justify-content:space-between;margin-bottom:12px;color:#aaa;font-size:13px}
+.live{color:#ed444c}
+
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:12px}
-.game{height:420px;position:relative;overflow:hidden;border-radius:12px;background:radial-gradient(ellipse at 45% 100%,#501313 0%,#251313 40%,#151515 85%);border:1px solid #502323}
-#multiplier{position:absolute;z-index:3;top:32%;left:50%;transform:translate(-50%,-50%);font-size:clamp(55px,9vw,105px);font-weight:900;text-shadow:0 3px 20px #000}
-#message{position:absolute;z-index:3;top:52%;left:50%;transform:translateX(-50%);color:#ddd;white-space:nowrap;font-size:15px}
-#round{position:absolute;top:16px;left:18px;color:#aaa;font-size:12px}
-#countdown{position:absolute;top:16px;right:18px;color:#ffca70;font-size:13px}
-#flight{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-#flightPath{fill:none;stroke:#f13c3c;stroke-width:3;stroke-dasharray:8 6;opacity:.8}
-#plane{position:absolute;z-index:2;left:8%;bottom:12%;font-size:42px;filter:drop-shadow(0 0 10px red);transform:rotate(-12deg);transition:left .12s linear,bottom .12s linear}
+
+.game{
+ height:440px;position:relative;overflow:hidden;
+ border-radius:12px;
+ background:
+ radial-gradient(ellipse at 55% 110%,#681b25 0%,#32151c 35%,#19151b 72%,#111218 100%);
+ border:1px solid #493038;
+}
+.game:before{
+ content:"";position:absolute;inset:0;
+ background-image:
+ linear-gradient(#ffffff08 1px,transparent 1px),
+ linear-gradient(90deg,#ffffff08 1px,transparent 1px);
+ background-size:45px 45px;
+ opacity:.35
+}
+#round{position:absolute;z-index:5;top:16px;left:18px;color:#aaa;font-size:12px}
+#countdown{position:absolute;z-index:5;top:16px;right:18px;color:#ffca70;font-size:13px}
+
+#multiplier{
+ position:absolute;z-index:5;top:34%;left:50%;
+ transform:translate(-50%,-50%);
+ font-size:clamp(55px,9vw,105px);
+ font-weight:900;text-shadow:0 4px 25px #000;
+ white-space:nowrap
+}
+#message{
+ position:absolute;z-index:5;top:54%;left:50%;
+ transform:translateX(-50%);
+ color:#eee;white-space:nowrap;font-size:15px;
+ text-shadow:0 2px 8px #000
+}
+
+#flight{position:absolute;inset:0;width:100%;height:100%;z-index:2;overflow:visible}
+#flightPath{
+ fill:none;stroke:#f34851;stroke-width:4;
+ stroke-linecap:round;stroke-linejoin:round;
+ stroke-dasharray:1000;stroke-dashoffset:1000;
+ filter:drop-shadow(0 0 7px #ef3946)
+}
+#planeGroup{
+ transform-origin:center;
+ filter:drop-shadow(0 0 9px #ff3434)
+}
+.smoke{
+ fill:none;stroke:#ffffffa0;stroke-width:3;
+ stroke-linecap:round;stroke-dasharray:5 9;
+ opacity:.75
+}
+#planeSvg{width:100%;height:100%}
+
 .history{display:flex;align-items:center;gap:7px;overflow:auto;padding:12px 0}
-.history span{background:#303030;padding:8px 12px;border-radius:20px;font-size:12px;white-space:nowrap}
-.side{background:#202020;border:1px solid #383838;border-radius:10px;padding:14px;height:420px;overflow:hidden}
+.history span{background:#30313a;padding:8px 12px;border-radius:20px;font-size:12px;white-space:nowrap}
+.side{background:#202128;border:1px solid #383943;border-radius:10px;padding:14px;height:440px;overflow:hidden}
 .side h3{font-size:14px;margin:2px 0 12px}
-.player{display:flex;justify-content:space-between;padding:10px 2px;border-bottom:1px solid #343434;font-size:12px;color:#ccc}
+.player{display:flex;justify-content:space-between;padding:10px 2px;border-bottom:1px solid #34343e;font-size:12px;color:#ccc}
 .player b{color:#48d98c}
+
 .betgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.panel{background:#202020;border:1px solid #393939;border-radius:10px;padding:17px}
+.panel{background:#202128;border:1px solid #393a45;border-radius:10px;padding:17px}
 .panel h3{margin:0 0 14px;font-size:15px}
 label{display:block;color:#aaa;font-size:12px;margin-bottom:8px}
-input{width:100%;background:#111;color:white;border:1px solid #555;border-radius:7px;padding:12px;font-size:16px}
+input{width:100%;background:#111217;color:white;border:1px solid #555;border-radius:7px;padding:12px;font-size:16px}
 button{width:100%;padding:13px;border:0;border-radius:7px;margin-top:10px;font-size:14px;font-weight:bold;cursor:pointer}
-.place{background:#df3535;color:white}
+.place{background:#df353e;color:white}
 .cash{background:#149c56;color:white}
 button:disabled{opacity:.4;cursor:not-allowed}
 .panelstatus{color:#aaa;font-size:12px;margin-top:10px;min-height:15px}
 .result{font-size:14px;margin-top:10px}
 .footer{color:#777;text-align:center;font-size:11px;padding:18px}
+
 @media(max-width:800px){
  .layout{grid-template-columns:1fr}
  .side{height:190px}
- .game{height:350px}
+ .game{height:370px}
 }
 @media(max-width:520px){
  header{padding:0 10px}
  .logo{font-size:21px}
  .balance{font-size:11px;padding:10px}
  .betgrid{grid-template-columns:1fr}
- .game{height:300px}
+ .game{height:320px}
  #message{font-size:12px}
 }
 </style>
 </head>
+
 <body>
+
 <header>
  <div class="logo">✈ <span>AVIATOR</span></div>
- <div class="balance">DEMO BALANCE: <b id="balance">1000.00</b></div>
+ <div class="balance">FUN MODE: <b id="balance">1000.00</b></div>
 </header>
 
 <main>
- <div class="topbar">
-  <span class="live">● LIVE GAME</span>
-  <span id="phase">WAITING</span>
- </div>
 
- <div class="layout">
-  <section>
-   <div class="game">
-    <div id="round">ROUND #1</div>
-    <div id="countdown">NEXT ROUND</div>
-    <div id="multiplier">1.00x</div>
-    <div id="message">PLACE YOUR BET</div>
-    <svg id="flight" viewBox="0 0 900 420" preserveAspectRatio="none">
-     <path id="flightPath" d="M30 375 Q300 375 420 290 T850 20"/>
-    </svg>
-    <div id="plane">✈️</div>
-   </div>
+<div class="topbar">
+ <span class="live">● LIVE GAME</span>
+ <span id="phase">WAITING</span>
+</div>
 
-   <div class="history" id="history">
-    <span>RECENT RESULTS</span>
-    <span>Waiting...</span>
-   </div>
+<div class="layout">
+<section>
 
-   <div class="betgrid">
-    <div class="panel">
-     <h3>BET PANEL 1</h3>
-     <label>BET AMOUNT (DEMO COINS)</label>
-     <input id="amount1" type="number" value="100" min="1">
-     <button class="place" id="place1">PLACE BET</button>
-     <button class="cash" id="cash1" disabled>CASH OUT</button>
-     <div class="panelstatus" id="status1">Waiting for round</div>
-     <div class="result" id="result1">No bet yet</div>
-    </div>
+<div class="game">
 
-    <div class="panel">
-     <h3>BET PANEL 2</h3>
-     <label>BET AMOUNT (DEMO COINS)</label>
-     <input id="amount2" type="number" value="50" min="1">
-     <button class="place" id="place2">PLACE BET</button>
-     <button class="cash" id="cash2" disabled>CASH OUT</button>
-     <div class="panelstatus" id="status2">Waiting for round</div>
-     <div class="result" id="result2">No bet yet</div>
-    </div>
-   </div>
-  </section>
+<div id="round">ROUND #1</div>
+<div id="countdown">NEXT ROUND</div>
 
-  <aside class="side">
-   <h3>LIVE ACTIVITY</h3>
-   <div id="players">
-    <div class="player"><span>Player_01</span><b>Watching</b></div>
-    <div class="player"><span>Player_02</span><b>Watching</b></div>
-    <div class="player"><span>Player_03</span><b>Watching</b></div>
-    <div class="player"><span>Player_04</span><b>Watching</b></div>
-    <div class="player"><span>You</span><b>Online</b></div>
-   </div>
-   <p style="color:#888;font-size:11px;margin-top:15px">Local demo activity, not real players.</p>
-  </aside>
- </div>
- <div class="footer">AVIATOR · PRACTICE MODE · VIRTUAL COINS ONLY</div>
+<div id="multiplier">1.00x</div>
+<div id="message">PLACE YOUR BET</div>
+
+<svg id="flight" viewBox="0 0 900 440" preserveAspectRatio="none">
+
+<defs>
+ <linearGradient id="trailGradient" x1="0" y1="1" x2="1" y2="0">
+  <stop offset="0%" stop-color="#ff5555" stop-opacity=".2"/>
+  <stop offset="100%" stop-color="#ff303b"/>
+ </linearGradient>
+</defs>
+
+<path id="flightPath"
+ d="M30 390 C190 390 260 365 360 310 S650 145 870 20"
+ stroke="url(#trailGradient)"/>
+
+<path id="smokePath"
+ class="smoke"
+ d="M30 390 C190 390 260 365 360 310 S650 145 870 20"/>
+
+<g id="planeGroup" transform="translate(75 370) rotate(-10)">
+
+<!-- Original custom vector aircraft -->
+<g id="planeSvg">
+
+<path d="M-40 2 L-10 -5 L-25 -28 L-15 -32 L12 -8 L42 -12 L53 -7 L40 1 L12 7 L-15 26 L-25 23 L-10 4 Z"
+ fill="#d71928" stroke="#ff8990" stroke-width="1.5"/>
+
+<path d="M-4 -7 L12 -8 L-1 -20 L-9 -19 Z"
+ fill="#ff5964"/>
+
+<path d="M-12 5 L10 7 L-4 19 L-13 19 Z"
+ fill="#a80e1b"/>
+
+<path d="M15 -8 L28 -9 L22 -3 L12 -2 Z"
+ fill="#ffb0b4"/>
+
+<path d="M-37 0 L-24 -2 L-20 1 L-34 4 Z"
+ fill="#ffffff"/>
+
+</g>
+</g>
+
+</svg>
+</div>
+
+<div class="history" id="history">
+ <span>RECENT RESULTS</span>
+ <span>Waiting...</span>
+</div>
+
+<div class="betgrid">
+
+<div class="panel">
+<h3>BET PANEL 1</h3>
+<label>BET AMOUNT (VIRTUAL COINS)</label>
+<input id="amount1" type="number" value="100" min="1">
+<button class="place" id="place1">PLACE BET</button>
+<button class="cash" id="cash1" disabled>CASH OUT</button>
+<div class="panelstatus" id="status1">Waiting for round</div>
+<div class="result" id="result1">No bet yet</div>
+</div>
+
+<div class="panel">
+<h3>BET PANEL 2</h3>
+<label>BET AMOUNT (VIRTUAL COINS)</label>
+<input id="amount2" type="number" value="50" min="1">
+<button class="place" id="place2">PLACE BET</button>
+<button class="cash" id="cash2" disabled>CASH OUT</button>
+<div class="panelstatus" id="status2">Waiting for round</div>
+<div class="result" id="result2">No bet yet</div>
+</div>
+
+</div>
+</section>
+
+<aside class="side">
+<h3>LIVE ACTIVITY</h3>
+<div id="players">
+<div class="player"><span>Player_01</span><b>Watching</b></div>
+<div class="player"><span>Player_02</span><b>Watching</b></div>
+<div class="player"><span>Player_03</span><b>Watching</b></div>
+<div class="player"><span>Player_04</span><b>Watching</b></div>
+<div class="player"><span>You</span><b>Online</b></div>
+</div>
+<p style="color:#888;font-size:11px;margin-top:15px">Local demo activity, not real players.</p>
+</aside>
+</div>
+
+<div class="footer">AVIATOR · FUN MODE · VIRTUAL COINS ONLY</div>
+
 </main>
 
 <script>
@@ -155,7 +259,9 @@ function updateButtons(){
 
 function resetBets(){
  bets.forEach((b,i)=>{
-  b.amount=0;b.active=false;b.cashed=false;
+  b.amount=0;
+  b.active=false;
+  b.cashed=false;
   el("status"+(i+1)).textContent="Waiting for bet";
   el("result"+(i+1)).textContent="No bet yet";
  });
@@ -166,35 +272,45 @@ function newRound(){
  round++;
  multiplier=1;
  countdown=8;
+
  resetBets();
+
  el("round").textContent="ROUND #"+round;
  el("phase").textContent="WAITING";
  el("multiplier").textContent="1.00x";
  el("message").textContent="PLACE YOUR BET";
  el("countdown").textContent="STARTS IN "+countdown+"s";
- el("plane").style.left="8%";
- el("plane").style.bottom="12%";
- el("flightPath").style.opacity=".15";
+
+ el("planeGroup").setAttribute("transform","translate(75 370) rotate(-10)");
+ el("flightPath").style.strokeDashoffset="1000";
+ el("smokePath").style.opacity=".15";
+
  updateButtons();
 }
 
 function placeBet(i){
  if(phase!=="WAITING")return;
+
  let n=i+1;
  let amount=Number(el("amount"+n).value);
+
  if(!Number.isFinite(amount)||amount<=0||amount>balance){
   el("status"+n).textContent="Invalid amount or low balance";
   return;
  }
+
  if(bets[i].active)return;
 
  bets[i].amount=amount;
  bets[i].active=true;
  bets[i].cashed=false;
+
  balance-=amount;
  showBalance();
+
  el("status"+n).textContent="Bet locked: "+amount.toFixed(2);
  el("result"+n).textContent="Waiting for flight";
+
  updateButtons();
 }
 
@@ -202,36 +318,41 @@ function startFlight(){
  phase="FLYING";
  startTime=performance.now();
  crashAt=+(1.15+Math.random()*7.5).toFixed(2);
+
  el("phase").textContent="FLYING";
  el("message").textContent="PLANE IS FLYING";
  el("countdown").textContent="ROUND #"+round;
- el("flightPath").style.opacity="1";
+ el("flightPath").style.strokeDashoffset="1000";
+ el("smokePath").style.opacity="1";
+
  updateButtons();
 }
 
 function cashOut(i){
  if(phase!=="FLYING"||!bets[i].active||bets[i].cashed)return;
+
  let b=bets[i];
  b.cashed=true;
  b.active=false;
+
  let winnings=b.amount*multiplier;
- let profit=winnings-b.amount;
  balance+=winnings;
  showBalance();
+
  el("status"+(i+1)).textContent="CASHED OUT AT "+multiplier.toFixed(2)+"x";
  el("result"+(i+1)).textContent="Won "+winnings.toFixed(2)+" coins";
+
  updateButtons();
 }
 
 function crash(){
  phase="CRASHED";
  multiplier=crashAt;
+
  el("phase").textContent="CRASHED";
  el("multiplier").textContent=crashAt.toFixed(2)+"x";
- el("message").textContent="✈ FLIGHT CRASHED!";
+ el("message").textContent="FLIGHT CRASHED!";
  el("countdown").textContent="ROUND FINISHED";
- el("plane").style.left="88%";
- el("plane").style.bottom="88%";
 
  bets.forEach((b,i)=>{
   if(b.active){
@@ -240,26 +361,44 @@ function crash(){
    el("result"+(i+1)).textContent="Lost "+b.amount.toFixed(2)+" coins";
   }
  });
+
  history.unshift(crashAt.toFixed(2)+"x");
  history=history.slice(0,12);
+
  el("history").innerHTML="<span>RECENT RESULTS</span>"+
-  history.map(x=>"<span>"+x+"</span>").join("");
+ history.map(x=>"<span>"+x+"</span>").join("");
+
  updateButtons();
 }
 
 function animate(now){
  if(phase==="FLYING"){
+
   let elapsed=(now-startTime)/1000;
   multiplier=Math.exp(elapsed*.22);
+
   if(multiplier>=crashAt){
    crash();
   }else{
+
    el("multiplier").textContent=multiplier.toFixed(2)+"x";
+
    let progress=Math.min(1,elapsed/12);
-   el("plane").style.left=(8+progress*78)+"%";
-   el("plane").style.bottom=(12+progress*72)+"%";
+
+   let x=75+progress*745;
+   let y=370-progress*335;
+
+   let angle=-10-progress*22;
+
+   el("planeGroup").setAttribute(
+    "transform",
+    "translate("+x+" "+y+") rotate("+angle+")"
+   );
+
+   el("flightPath").style.strokeDashoffset=1000-progress*1000;
   }
  }
+
  requestAnimationFrame(animate);
 }
 
@@ -267,6 +406,7 @@ function clock(){
  if(phase==="WAITING"){
   countdown--;
   el("countdown").textContent="STARTS IN "+countdown+"s";
+
   if(countdown<=0){
    startFlight();
   }
@@ -284,5 +424,6 @@ newRound();
 requestAnimationFrame(animate);
 setInterval(clock,1000);
 </script>
+
 </body>
 </html>
